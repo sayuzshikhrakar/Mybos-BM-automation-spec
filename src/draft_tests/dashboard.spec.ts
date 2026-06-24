@@ -37,10 +37,9 @@ describe('Dashboard Automation Layer', () => {
     });
 
     it('should explicitly load and render the dashboard after successful authentication', async () => {
-        // 1. Flow: Login
-        // Natively waits for the login screen and triggers the interaction
-        await LoginPage.openLoginScreen();
-        await LoginPage.login('valid_automation_user', 'secure_password_123');
+        // 1. Flow: Smart Authentication
+        // Dynamically checks if we need to login or if we are already on the dashboard
+        await LoginPage.ensureAuthenticated('James', 'asdfasdf');
 
         // 2. Flow: Verify dashboard loaded
         // Asserts explicitly that the defined root 'dashboard_screen_root' mounts

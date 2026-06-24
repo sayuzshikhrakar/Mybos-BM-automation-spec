@@ -29,15 +29,14 @@ describe('Cases Module Automation Phase 3', () => {
     });
 
     it('should fully orchestrate the Cases module navigation and verification flows', async () => {
-        // 1. Login
-        await LoginPage.openLoginScreen();
-        await LoginPage.login('valid_automation_user', 'secure_password_123');
+        // 1. Flow: Smart Authentication
+        await LoginPage.ensureAuthenticated('valid_automation_user', 'secure_password_123');
 
         // 2. Verify dashboard
         await DashboardAssertions.assertDashboardReady();
 
         // 3. Navigate to Cases
-        await DashboardPage.openCasesModule();
+        await DashboardPage.tapCasesModule();
 
         // 4. Verify Cases screen
         await CasesPage.waitForCasesLoaded();

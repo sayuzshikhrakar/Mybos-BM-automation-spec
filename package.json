@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "wdio run wdio.conf.ts",
+    "test:physical": "TARGET_DEVICE=physical wdio run wdio.conf.ts",
+    "test:emulator": "TARGET_DEVICE=emulator wdio run wdio.conf.ts",
+    "test:dashboard:physical": "TARGET_DEVICE=physical wdio run wdio.conf.ts --spec src/draft_tests/dashboard.spec.ts",
+    "test:dashboard:emulator": "TARGET_DEVICE=emulator wdio run wdio.conf.ts --spec src/draft_tests/dashboard.spec.ts",
+    "test:login:physical": "TARGET_DEVICE=physical wdio run wdio.conf.ts --spec src/draft_tests/login.spec.ts",
+    "test:login:emulator": "TARGET_DEVICE=emulator wdio run wdio.conf.ts --spec src/draft_tests/login.spec.ts",
     "test:android": "wdio run wdio.conf.ts --spec src/tests/**/*.spec.ts",
+    "report": "allure generate allure-results --clean --single-file -o allure-report",
     "build": "tsc"
   },
   "keywords": [
@@ -20,7 +27,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.24",
-    "@wdio/allure-reporter": "^9.29.0",
+    "@wdio/allure-reporter": "^8.43.0",
     "@wdio/appium-service": "^8.32.4",
     "@wdio/cli": "^8.32.4",
     "@wdio/local-runner": "^8.32.4",
@@ -29,6 +36,7 @@
     "allure-commandline": "^2.43.0",
     "appium": "^3.5.2",
     "appium-uiautomator2-driver": "^7.6.2",
+    "rimraf": "^6.1.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

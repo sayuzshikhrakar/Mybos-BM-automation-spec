@@ -54,6 +54,14 @@ export class CasesPage extends BasePage {
     async refreshCases(): Promise<void> {
         await this.tap(this.refreshBtn);
     }
+
+    async selectCase(caseId: string): Promise<void> {
+        await this.openCaseById(caseId);
+    }
+
+    async updateCaseStatusToResolved(): Promise<void> {
+        await this.selectFromDropdown('cases_status_dropdown_trigger', 'cases_status_dropdown_option_resolved');
+    }
 }
 
 export default new CasesPage();

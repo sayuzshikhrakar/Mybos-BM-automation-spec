@@ -14,6 +14,10 @@ export class AssetsPage extends BasePage {
     get refreshBtn()     { return 'assets_refresh_btn'; }
     get filterDropdown() { return 'assets_filter_dropdown_trigger'; }
     get searchInput()    { return 'assets_search_input'; }
+    get createBtn()      { return 'assets_create_btn'; }
+    get createNameInput() { return 'assets_create_name_input'; }
+    get createSubmitBtn() { return 'assets_create_submit_btn'; }
+    get successToast()   { return 'global_toast_message'; }
 
     override async verifyScreen(): Promise<void> {
         await super.verifyScreen();
@@ -63,6 +67,15 @@ export class AssetsPage extends BasePage {
 
     async refreshAssets(): Promise<void> {
         await this.tap(this.refreshBtn);
+    }
+
+    async initiateCreation(): Promise<void> {
+        await this.tap(this.createBtn);
+    }
+
+    async createAsset(name: string): Promise<void> {
+        await this.input(this.createNameInput, name);
+        await this.tap(this.createSubmitBtn);
     }
 }
 

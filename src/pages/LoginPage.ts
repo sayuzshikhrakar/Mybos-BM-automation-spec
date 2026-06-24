@@ -16,8 +16,8 @@ export class LoginPage extends BasePage {
     get usernameInput() { return '//android.widget.EditText[1]'; }
     // password: UiAutomator selector by instance index (more reliable than XPath index after keyboard open)
     get passwordInput() { return '-android uiautomator:new UiSelector().className("android.widget.EditText").instance(1)'; }
-    // Sign In button matched by visible text
-    get submitBtn()     { return '//*[@text="Sign In"]'; }
+    // Sign In button matched by native resource-id (provided by Appium inspector)
+    get submitBtn()     { return '//*[@resource-id="loginBtn"]'; }
     get forgotPassword(){ return '//*[@text="Forgot password?"]'; }
 
     /**
@@ -49,7 +49,56 @@ export class LoginPage extends BasePage {
     async login(username: string, pass: string): Promise<void> {
         await this.input(this.usernameInput, username);
         await this.input(this.passwordInput, pass);
-        await this.tap(this.submitBtn);
+        
+        // 1. Safely tap the Sign In button using raw coordinate injection!
+        // We MUST use raw coordinates because the Android GestureController crashes on this specific element's internal bounds via standard .click().
+        // Now that "USB Debugging (Security settings)" is enabled, this raw injection will succeed!
+        console.info('[Authentication] Tapping Sign In button via raw coordinate injection...');
+        
+        // Wait briefly for keyboard to stabilize if it popped up natively
+        if (driver.isAndroid) {
+            await driver.pause(1000);
+        }
+
+        const btn = await $(this.submitBtn);
+        const location = await btn.getLocation();
+        const size = await btn.getSize();
+        
+        const clickX = Math.round(location.x + size.width / 2);
+        const clickY = Math.round(location.y + size.height / 2);
+
+        await driver.performActions([{
+            type: 'pointer',
+            id: 'finger_submit',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: clickX, y: clickY },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pause', duration: 100 },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+        await driver.releaseActions();
+    }
+
+    /**
+     * Smart authentication flow:
+     * 1. If already logged in (Dashboard visible), bypasses login.
+     * 2. If not logged in, performs credentials entry and signs in.
+     */
+    async ensureAuthenticated(username: string, pass: string): Promise<void> {
+        console.info('[Authentication] Checking current application state...');
+        const emailInput = await $(this.usernameInput);
+        
+        // Quick check (3 seconds) to see if we are on the login screen
+        const isOnLoginScreen = await emailInput.waitForExist({ timeout: 3000 }).catch(() => false);
+
+        if (isOnLoginScreen) {
+            console.info('[Authentication] App is on Login Screen. Performing login flow.');
+            await this.login(username, pass);
+        } else {
+            console.info('[Authentication] App is NOT on Login Screen. Assuming already logged in (Dashboard).');
+        }
     }
 
     /**

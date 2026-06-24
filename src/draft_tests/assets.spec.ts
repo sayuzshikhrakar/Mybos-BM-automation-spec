@@ -30,15 +30,14 @@ describe('Assets Module Automation Phase 4', () => {
     });
 
     it('should fully orchestrate the Assets module navigation and verification flows', async () => {
-        // 1. Login
-        await LoginPage.openLoginScreen();
-        await LoginPage.login('valid_automation_user', 'secure_password_123');
+        // 1. Flow: Smart Authentication
+        await LoginPage.ensureAuthenticated('valid_automation_user', 'secure_password_123');
 
         // 2. Verify Dashboard
         await DashboardAssertions.assertDashboardReady();
 
         // 3. Navigate to Assets module
-        await DashboardPage.openAssetsModule();
+        await DashboardPage.tapAssetsModule();
 
         // 4. Verify Assets screen loaded
         await AssetsPage.waitForAssetsLoaded();

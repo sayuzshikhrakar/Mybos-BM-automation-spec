@@ -13,6 +13,7 @@ export class StateEngine {
     static TIMEOUT_WEBVIEW_LOAD = 40000;
     static TIMEOUT_DROPDOWN_OPEN = 10000;
     static TIMEOUT_ELEMENT_INTERACT = 10000;
+    static TIMEOUT_ELEMENT_READY = 10000;
 
     /**
      * STEP 2: SYSTEM STABILITY CHECK

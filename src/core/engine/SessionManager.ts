@@ -96,7 +96,12 @@ export class SessionManager {
      */
     static async applicationReset(): Promise<void> {
         console.warn('SessionManager: Performing full application reset.');
-        await driver.reloadSession();
+        try {
+            await driver.execute('mobile: terminateApp', { appId: 'com.mybosapps.bmapp.stg' });
+        } catch (e) {
+            console.warn('SessionManager: App termination failed or app not running.');
+        }
+        await driver.execute('mobile: activateApp', { appId: 'com.mybosapps.bmapp.stg' });
         await this.frameworkStartup();
     }
 

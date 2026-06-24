@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { SessionManager } from '../core/SessionManager';
+import { SessionManager } from '../core/session/SessionManager';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import AssetsPage from '../pages/AssetsPage';
@@ -8,17 +8,12 @@ import { LocatorRegistry } from '../core/LocatorRegistry';
 describe('Assets Flow Module', () => {
     
     before(async () => {
-        await SessionManager.validateAppLaunch();
-        
-        // Setup state: Assumes logged in for these tests.
-        // Or implement a programmatic session initialization.
-        await LoginPage.waitForScreenReady();
-        await LoginPage.login('qa_user', 'password');
+        await LoginPage.ensureAuthenticated('qa_user', 'password');
         await DashboardPage.waitForScreenReady();
     });
 
     beforeEach(async () => {
-        await DashboardPage.navigateToAssets();
+        await DashboardPage.tapAssetsModule();
         await AssetsPage.waitForScreenReady();
     });
 

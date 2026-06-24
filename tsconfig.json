@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["./node_modules/@types"],
     "types": ["node", "mocha"],
+    "baseUrl": ".",
     "paths": {
       "@wdio/globals": ["./node_modules/@wdio/globals/build/index.d.ts"],
       "@wdio/types": ["./node_modules/@wdio/types/build/index.d.ts"]

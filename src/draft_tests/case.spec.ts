@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { SessionManager } from '../core/SessionManager';
+import { SessionManager } from '../core/session/SessionManager';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import CasesPage from '../pages/CasesPage';
@@ -7,15 +7,12 @@ import CasesPage from '../pages/CasesPage';
 describe('Cases Flow Module', () => {
     
     before(async () => {
-        await SessionManager.validateAppLaunch();
-        
-        await LoginPage.waitForScreenReady();
-        await LoginPage.login('qa_user', 'password');
+        await LoginPage.ensureAuthenticated('qa_user', 'password');
         await DashboardPage.waitForScreenReady();
     });
 
     beforeEach(async () => {
-        await DashboardPage.navigateToCases();
+        await DashboardPage.tapCasesModule();
         await CasesPage.waitForScreenReady();
     });
 

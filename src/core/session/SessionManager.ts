@@ -75,7 +75,7 @@ export class SessionManager {
      */
     static async resetSession(): Promise<void> {
         // Appium specific: Restarts the underlying application session entirely
-        await driver.reset();
+        await driver.reloadSession();
         
         // Re-validate everything from scratch after a hard reset
         await this.initialize();

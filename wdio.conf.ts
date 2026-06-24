@@ -43,17 +43,17 @@ export const config: Options.Testrunner = {
     maxInstances: 1,
     capabilities: [{
         platformName: 'Android',
-        'appium:deviceName': 'Android Emulator',
+        'appium:deviceName': process.env.TARGET_DEVICE === 'emulator' ? 'Genymotion Emulator' : 'Android Device',
+        ...(process.env.TARGET_DEVICE === 'emulator' ? {} : { 'appium:udid': 'PRVKMJCEJ7PZGM69' }),
         'appium:automationName': 'UiAutomator2',
-        'appium:app': './apk/mybos_bm.apk',
         'appium:noSign': true,
         'appium:appPackage': 'com.mybosapps.bmapp.stg',
         'appium:appActivity': 'com.mybosapps.bmapp.MainActivity',
         'appium:appWaitActivity': 'com.mybosapps.bmapp.MainActivity',
         'appium:newCommandTimeout': 240,
-        'appium:autoGrantPermissions': true,
-        'appium:noReset': false,
-        'appium:chromedriverAutodownload': true
+        'appium:noReset': true,
+        'appium:chromedriverAutodownload': true,
+        'appium:ignoreHiddenApiPolicyError': true
     } as any],
 
     //
@@ -146,6 +146,25 @@ export const config: Options.Testrunner = {
                 Buffer.from(screenshot, 'base64'),
                 'image/png'
             );
+        }
+    },
+
+    /**
+     * Gets executed after all workers got shut down and the process is about to exit.
+     */
+    onComplete: function(exitCode, config, capabilities, results) {
+        const { execSync } = require('child_process');
+        try {
+            console.info('\n================================================================');
+            console.info('[REPORT] Automatically generating Allure Report...');
+            console.info('================================================================');
+            execSync('npm run report', { stdio: 'inherit' });
+            console.info('================================================================');
+            console.info('[REPORT] ✅ Allure Report generated successfully!');
+            console.info('[REPORT] 📄 Single file report ready at: ./allure-report/index.html');
+            console.info('================================================================\n');
+        } catch (error) {
+            console.error('[REPORT] ❌ Failed to generate Allure Report:', error);
         }
     }
 };
