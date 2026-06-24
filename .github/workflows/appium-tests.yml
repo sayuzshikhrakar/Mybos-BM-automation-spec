@@ -1,0 +1,45 @@
+name: Appium Automation Framework
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm ci
+
+    # Required for UI Automator 2 / Appium logic if using Android
+    # For iOS, you'd use a different Action/Setup
+    - name: Setup Android Emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 30
+        target: default
+        arch: x86_64
+        profile: Nexus 6
+        script: |
+          # The execution engine enforces strict failure rules.
+          # Missing locators, timeouts, or failure states will cause tests to fail and exit non-zero here.
+          npm run test:android
+
+    - name: Upload Logs
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: appium-logs
+        path: |
+          wdio.log
+          appium.log

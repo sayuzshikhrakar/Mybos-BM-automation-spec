@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QuarantineReport",
+  "description": "Schema for the FlakyTestQuarantineEngine execution report.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "testName",
+      "failureCount",
+      "lastFailureReason",
+      "stabilityScore",
+      "status"
+    ],
+    "properties": {
+      "testName": {
+        "type": "string",
+        "description": "Human-readable title of the test as it appears in the Mocha suite."
+      },
+      "failureCount": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Total cumulative failures recorded across all CI runs."
+      },
+      "lastFailureReason": {
+        "type": ["string", "null"],
+        "description": "The message or classification of the most recent failure. Null if never failed."
+      },
+      "stabilityScore": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Computed score from 0.0 (completely unstable) to 1.0 (fully stable). Derived from failure count over observed runs."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["active", "quarantined", "released"],
+        "description": "Current quarantine lifecycle state of the test. Active = executing normally. Quarantined = excluded from regression. Released = graduated back after demonstrating stability."
+      }
+    },
+    "additionalProperties": false
+  }
+}

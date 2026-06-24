@@ -1,0 +1,34 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# WebdriverIO & Appium
+errorShots/
+allure-results/
+allure-report/
+logs/
+*.log
+
+# App builds/binaries
+# If you don't want to commit the APKs, uncomment the next line
+*.apk
+
+# macOS
+.DS_Store
+
+# IDEs and Editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Environment variables
+.env
+.env.test
+
+# Build outputs (if applicable)
+dist/
+build/
