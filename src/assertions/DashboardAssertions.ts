@@ -24,30 +24,51 @@ export class DashboardAssertions {
     private static async assertVisible(identifier: string): Promise<void> {
         const locator = LocatorRegistry.get(identifier);
         const element = await $(locator);
-        
+
         await element.waitForDisplayed({
             timeout: StateEngine.TIMEOUT_SCREEN_LOAD,
             timeoutMsg: `Assertion Failed: Element ${identifier} was not visibly mounted.`
         });
-        
+
         await expect(element).toBeDisplayed();
     }
 
+
     /**
-     * Asserts that the explicitly named dashboard root has successfully 
-     * loaded into the accessibility hierarchy.
+     * Asserts the explicit visibility of the dashboard navigation tab.
      */
-    static async assertDashboardLoaded(): Promise<void> {
+    static async assertDashboardTabVisible(): Promise<void> {
         await this.enforceExecutionContract();
-        await this.assertVisible('dashboard_screen_root');
+        await this.assertVisible('Home');
     }
 
     /**
-     * Asserts the explicit visibility of the global bottom navigation semantic container.
+     * Asserts that all provided dashboard modules are fully visible.
      */
-    static async assertBottomNavigationVisible(): Promise<void> {
+    static async assertDashboardModulesVisible(modules: string[]): Promise<void> {
         await this.enforceExecutionContract();
-        await this.assertVisible('global_bottom_nav');
+        for (const module of modules) {
+            await this.assertVisible(module);
+        }
+    }
+
+    /**
+     * Asserts that the hamburger menu icon is visible on the top left.
+     */
+    static async assertHamburgerMenuVisible(): Promise<void> {
+        await this.enforceExecutionContract();
+        // Since the hamburger ImageView has no content-desc or resource-id, 
+        // we use native UIAutomator to target the very first ImageView rendered on screen.
+        const hamburgerLocator = '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)';
+        await this.assertVisible(hamburgerLocator);
+    }
+
+    /**
+     * Asserts that the correct building name is prominently displayed.
+     */
+    static async assertBuildingNameVisible(buildingName: string): Promise<void> {
+        await this.enforceExecutionContract();
+        await this.assertVisible(buildingName);
     }
 
     /**
@@ -56,12 +77,10 @@ export class DashboardAssertions {
      */
     static async assertDashboardReady(): Promise<void> {
         await this.enforceExecutionContract();
-        
-        // Enforce the atomic readiness gate for the dashboard specifically
-        await StateEngine.waitForScreenReady('dashboard_screen_root');
-        
+        // Enforce the atomic readiness gate for the dashboard using a realistic UI component
+        await StateEngine.waitForScreenReady('Home');
+
         // Verify visual components are natively attached
-        await this.assertDashboardLoaded();
-        await this.assertBottomNavigationVisible();
+        await this.assertDashboardTabVisible();
     }
 }

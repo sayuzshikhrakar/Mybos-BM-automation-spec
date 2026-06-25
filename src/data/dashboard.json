@@ -1,0 +1,17 @@
+{
+    "buildingName": "756 Kipps Lane 756 Kipps Lane 756  Kipps Lane 756 Kipps Lane 756 Kipps Lane 756 Kipps Lane",
+    "expectedModules": [
+        "Cases",
+        "Maintenance Request",
+        "Inspections",
+        "Residents",
+        "Parcels",
+        "Contractors",
+        "Library",
+        "Calendar",
+        "Broadcast",
+        "Keys",
+        "Breach",
+        "Assets"
+    ]
+}

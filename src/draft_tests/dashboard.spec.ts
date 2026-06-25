@@ -4,6 +4,8 @@ import { SessionManager } from '../core/engine/SessionManager';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import { DashboardAssertions } from '../assertions/DashboardAssertions';
+import dashboardData from '../data/dashboard.json';
+import loginData from '../data/login.json';
 
 /**
  * dashboard.spec.ts
@@ -39,19 +41,30 @@ describe('Dashboard Automation Layer', () => {
     it('should explicitly load and render the dashboard after successful authentication', async () => {
         // 1. Flow: Smart Authentication
         // Dynamically checks if we need to login or if we are already on the dashboard
-        await LoginPage.ensureAuthenticated('James', 'asdfasdf');
+        await LoginPage.ensureAuthenticated(loginData.username, loginData.password);
 
-        // 2. Flow: Verify dashboard loaded
-        // Asserts explicitly that the defined root 'dashboard_screen_root' mounts
-        await DashboardAssertions.assertDashboardLoaded();
 
         // 3. Flow: Verify dashboard ready
         // Compound assertion resolving system stability, loading hooks, and screen gates
         await DashboardAssertions.assertDashboardReady();
 
         // 4. Flow: Verify bottom navigation visible
-        // Explicitly validates the structural 'global_bottom_nav' semantic node
-        await DashboardAssertions.assertBottomNavigationVisible();
+        // Explicitly validates the structural 'Home' semantic node
+        await DashboardAssertions.assertDashboardTabVisible();
+
+        // 5. Flow: Verify dashboard modules
+        // Explicitly validates that all required modules are visible on the dashboard screen
+        await DashboardAssertions.assertDashboardModulesVisible(dashboardData.expectedModules);
+    });
+
+    it('should display the hamburger menu icon on the top left of the dashboard', async () => {
+        await LoginPage.ensureAuthenticated(loginData.username, loginData.password);
+        await DashboardAssertions.assertHamburgerMenuVisible();
+    });
+
+    it('should display the correct building name on the dashboard', async () => {
+        await LoginPage.ensureAuthenticated(loginData.username, loginData.password);
+        await DashboardAssertions.assertBuildingNameVisible(dashboardData.buildingName);
     });
 
 });

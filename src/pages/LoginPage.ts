@@ -90,14 +90,30 @@ export class LoginPage extends BasePage {
         console.info('[Authentication] Checking current application state...');
         const emailInput = await $(this.usernameInput);
         
-        // Quick check (3 seconds) to see if we are on the login screen
-        const isOnLoginScreen = await emailInput.waitForExist({ timeout: 3000 }).catch(() => false);
+        let isOnLoginScreen = false;
+        let isOnDashboard = false;
+
+        // Wait dynamically for either the Login Screen or the Dashboard to fully render
+        try {
+            await driver.waitUntil(async () => {
+                isOnLoginScreen = await emailInput.isExisting();
+                isOnDashboard = await $('~Home').isExisting();
+                return isOnLoginScreen || isOnDashboard;
+            }, {
+                timeout: 20000,
+                timeoutMsg: '[Authentication] App timed out waiting for either the Login Screen or the Dashboard to load.'
+            });
+        } catch (e: any) {
+            console.error('[Authentication] TIMEOUT! Dumping page source to see what screen we are stuck on:');
+            console.error(await driver.getPageSource());
+            throw e;
+        }
 
         if (isOnLoginScreen) {
             console.info('[Authentication] App is on Login Screen. Performing login flow.');
             await this.login(username, pass);
         } else {
-            console.info('[Authentication] App is NOT on Login Screen. Assuming already logged in (Dashboard).');
+            console.info('[Authentication] App is NOT on Login Screen. Dashboard detected (already logged in).');
         }
     }
 

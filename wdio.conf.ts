@@ -60,7 +60,7 @@ export const config: Options.Testrunner = {
     // ===================
     // Test Configurations
     // ===================
-    logLevel: 'info',
+    logLevel: 'warn',
     bail: 1, // Immediately terminate execution on first HARD FAIL
     baseUrl: 'http://localhost',
 
