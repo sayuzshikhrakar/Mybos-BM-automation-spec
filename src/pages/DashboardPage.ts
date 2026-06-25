@@ -13,10 +13,23 @@ export class DashboardPage extends BasePage {
     }
 
     // Natively structured semantic identifiers
-    get casesTab()      { return 'dashboard_nav_cases'; }
-    get assetsTab()     { return 'dashboard_nav_assets'; }
-    get residentsTab()  { return 'dashboard_nav_residents'; }
-    get menuIcon()      { return 'dashboard_nav_menu'; }
+    get casesTab()      { return 'Cases'; }
+    get assetsTab()     { return 'Assets'; }
+    get residentsTab()  { return 'Residents'; }
+    get homeTab()       { return 'Home'; }
+    get moreTab()       { return 'More'; }
+    get menuIcon()      { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)'; }
+    get weatherBanner() { return 'dashboard_weather_banner'; }
+    get fabIcon()       { return 'dashboard_fab_icon'; }
+    get createCaseFabAction() { return 'fab_action_create_case'; }
+    get bellIcon()      { return 'dashboard_bell_icon'; }
+    get notificationsList() { return 'notifications_list'; }
+    get notificationItem() { return 'notification_item'; }
+    get markAllReadBtn(){ return 'notifications_mark_all_read'; }
+    get supportMenuOption() { return 'drawer_support_feedback'; }
+    get feedbackInput() { return 'support_feedback_input'; }
+    get submitFeedbackBtn() { return 'support_feedback_submit'; }
+    get successMessage() { return 'support_feedback_success'; }
 
     /**
      * Overridden hook to natively validate specific dashboard components 
@@ -41,10 +54,7 @@ export class DashboardPage extends BasePage {
      * using fallback selectors or XPath.
      */
     async verifyBottomNavigation(): Promise<void> {
-        await this.expectVisible(this.casesTab);
-        await this.expectVisible(this.assetsTab);
-        await this.expectVisible(this.residentsTab);
-        await this.expectVisible(this.menuIcon);
+        await this.expectVisible(this.homeTab);
     }
 
     /**
@@ -73,6 +83,47 @@ export class DashboardPage extends BasePage {
      */
     async tapMenu(): Promise<void> {
         await this.tap(this.menuIcon);
+    }
+
+    async waitForWeatherBanner(): Promise<void> {
+        await this.expectVisible(this.weatherBanner);
+    }
+
+    async tapFab(): Promise<void> {
+        await this.tap(this.fabIcon);
+    }
+
+    async tapCreateCaseFromFab(): Promise<void> {
+        await this.tap(this.createCaseFabAction);
+    }
+
+    async openNotifications(): Promise<void> {
+        await this.tap(this.bellIcon);
+    }
+
+    async verifyNotificationsListOpen(): Promise<void> {
+        await this.expectVisible(this.notificationsList);
+    }
+
+    async markSingleNotificationRead(): Promise<void> {
+        await this.tap(this.notificationItem);
+    }
+
+    async markAllNotificationsRead(): Promise<void> {
+        await this.tap(this.markAllReadBtn);
+    }
+
+    async tapSupportFeedback(): Promise<void> {
+        await this.tap(this.supportMenuOption);
+    }
+
+    async submitSupportFeedback(feedbackText: string): Promise<void> {
+        await this.input(this.feedbackInput, feedbackText);
+        await this.tap(this.submitFeedbackBtn);
+    }
+
+    async verifyFeedbackSuccess(): Promise<void> {
+        await this.expectVisible(this.successMessage);
     }
 
     /**
