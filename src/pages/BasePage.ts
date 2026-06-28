@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 import { StateEngine } from '../core/StateEngine';
 
 /**
@@ -25,7 +25,7 @@ export class BasePage {
         // Disabled strict contract validation because the physical app does not
         // implement root accessibility IDs like 'dashboard_screen_root'.
         // await StateEngine.waitForScreenReady(this.screenRootId);
-        
+
         // Generic wait to allow the screen to transition
         await driver.pause(2000);
     }
@@ -93,7 +93,7 @@ export class BasePage {
 
         // 2. Wait for expansion via the contract's explicit state hook
         await this.getElement(`${triggerId}_expanded`);
-        
+
         // 3. Select option
         await this.tap(optionId);
     }
@@ -103,7 +103,7 @@ export class BasePage {
      */
     async scrollUntilVisible(identifier: string, maxScrolls: number = 10): Promise<void> {
         const locator = LocatorRegistry.get(identifier);
-        
+
         for (let i = 0; i < maxScrolls; i++) {
             const el = await $(locator);
             if (await el.isDisplayed()) {
@@ -128,12 +128,12 @@ export class BasePage {
                     { type: 'pointerUp', button: 0 }
                 ]
             }]);
-            
+
             // Release action before next scroll
             await driver.releaseActions();
             await driver.pause(500); // brief pause to let UI settle after scroll
         }
-        
+
         throw new Error(`scrollUntilVisible: Element ${identifier} not found after ${maxScrolls} scrolls.`);
     }
 
@@ -152,5 +152,40 @@ export class BasePage {
         const locator = LocatorRegistry.get(identifier);
         const el = await $(locator);
         await expect(el).not.toBeDisplayed();
+    }
+
+    /**
+     * Returns to the Dashboard screen by clicking the back button until the "more" tab is visible.
+     */
+    async returnToDashboard(): Promise<void> {
+        const backButtonLocator = LocatorRegistry.get(LocatorRegistry.NavigationPage.backButton);
+        const moreTabLocator = LocatorRegistry.get(LocatorRegistry.DashboardPage.moreTab);
+        const homeTabLocator = LocatorRegistry.get('Home');
+
+        let isMoreTabVisible = await $(moreTabLocator).isDisplayed();
+
+        // If we are already on the dashboard, exit early
+        if (isMoreTabVisible) {
+            return;
+        }
+
+        let attempts = 0;
+
+        while (!isMoreTabVisible && attempts < 5) {
+            const backBtn = await $(backButtonLocator);
+            const homeBtn = await $(homeTabLocator);
+
+            if (await backBtn.isDisplayed()) {
+                await backBtn.click();
+            } else if (await homeBtn.isDisplayed()) {
+                await homeBtn.click();
+            } else {
+                break; // If there is no back button or home tab, break to avoid infinite loop
+            }
+
+            await driver.pause(1000); // Wait for screen transition
+            isMoreTabVisible = await $(moreTabLocator).isDisplayed();
+            attempts++;
+        }
     }
 }

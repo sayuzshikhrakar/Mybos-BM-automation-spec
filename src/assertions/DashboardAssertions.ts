@@ -1,6 +1,7 @@
 import { expect } from '@wdio/globals';
 import { StateEngine } from '../core/StateEngine';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
+import DashboardPage from '../pages/DashboardPage';
 
 /**
  * DashboardAssertions.ts
@@ -48,7 +49,11 @@ export class DashboardAssertions {
     static async assertDashboardModulesVisible(modules: string[]): Promise<void> {
         await this.enforceExecutionContract();
         for (const module of modules) {
-            await this.assertVisible(module);
+            // Convert the plain string to a description-based locator to avoid the ~ prefix, as Flutter maps text to content-desc
+            const textLocator = `-android uiautomator:new UiSelector().descriptionContains("${module}")`;
+            // Scroll until the module is visible on screen before asserting
+            await DashboardPage.scrollUntilVisible(textLocator);
+            await this.assertVisible(textLocator);
         }
     }
 

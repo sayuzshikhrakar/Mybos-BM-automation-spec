@@ -2,7 +2,7 @@ import { expect } from '@wdio/globals';
 import { Bootstrap } from '../core/engine/Bootstrap';
 import { SessionManager } from '../core/engine/SessionManager';
 import { ContractValidator } from '../core/engine/ContractValidator';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * ContractAudit.spec.ts
@@ -23,9 +23,9 @@ describe('System Contract Audit', () => {
         if (this.currentTest?.state === 'failed') {
             const safeTestName = this.currentTest.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
             console.error(`[AUDIT] HARD FAIL: Contract Violation detected in: ${this.currentTest.title}`);
-            
+
             await SessionManager.captureScreenshot(`audit_failure_${safeTestName}`);
-            
+
             // Re-throw to explicitly enforce the HARD FAIL requirement across the runner
             throw new Error(`HARD FAIL: Critical contract violation in ${this.currentTest.title}`);
         }

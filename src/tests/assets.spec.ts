@@ -1,7 +1,7 @@
 import { expect } from '@wdio/globals';
 import { Bootstrap } from '../core/engine/Bootstrap';
 import { SessionManager } from '../core/engine/SessionManager';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import AssetsPage from '../pages/AssetsPage';
@@ -61,18 +61,18 @@ describe('Assets Module Automation Phase 4', () => {
             await AssetsPage.verifyListLoaded();
             await AssetsAssertions.assertAssetsListVisible();
             await AssetsPage.openFirstAsset();
-            
+
             // verify asset detail screen
             await AssetDetailPage.verifyAssetDetailLoaded();
             await AssetDetailAssertions.assertAssetDetailLoaded();
-            
+
             // verify content visible
             await AssetDetailPage.verifyContentVisible();
             await AssetDetailAssertions.assertAssetContentVisible();
-            
+
             // go back to assets list
             await AssetDetailPage.goBack();
-            
+
             await AssetsPage.verifyAssetsReady();
             await AssetsAssertions.assertAssetsReady();
         }

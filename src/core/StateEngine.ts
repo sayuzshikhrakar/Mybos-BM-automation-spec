@@ -1,5 +1,5 @@
 import { driver, $ } from '@wdio/globals';
-import { LocatorRegistry } from './LocatorRegistry';
+import { LocatorRegistry } from './locator/LocatorRegistry';
 
 /**
  * StateEngine.ts
@@ -69,9 +69,9 @@ export class StateEngine {
                     timeout: this.TIMEOUT_ELEMENT_INTERACT,
                     timeoutMsg: `StateEngine: Element ${locator} not found`
                 });
-                
+
                 await this.validateNoSystemFailure();
-                
+
                 return element;
             } catch (error: any) {
                 if (attempt === maxRetries) {
@@ -82,7 +82,7 @@ export class StateEngine {
                 baseDelay *= 2;
             }
         }
-        
+
         throw new Error(`StateEngine: Element ${locator} not ready after retries.`);
     }
 }

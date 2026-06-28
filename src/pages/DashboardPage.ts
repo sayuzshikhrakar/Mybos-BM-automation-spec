@@ -1,4 +1,5 @@
 import { BasePage } from './BasePage';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * DashboardPage.ts
@@ -13,20 +14,20 @@ export class DashboardPage extends BasePage {
     }
 
     // Natively structured semantic identifiers
-    get casesTab()      { return 'Cases'; }
-    get assetsTab()     { return 'Assets'; }
-    get residentsTab()  { return 'Residents'; }
-    get homeTab()       { return 'Home'; }
-    get moreTab()       { return 'More'; }
-    get menuIcon()      { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)'; }
-    get weatherBanner() { return 'dashboard_weather_banner'; }
-    get fabIcon()       { return 'dashboard_fab_icon'; }
-    get createCaseFabAction() { return 'fab_action_create_case'; }
-    get bellIcon()      { return 'dashboard_bell_icon'; }
-    get notificationsList() { return 'notifications_list'; }
-    get notificationItem() { return 'notification_item'; }
-    get markAllReadBtn(){ return 'notifications_mark_all_read'; }
-    get supportMenuOption() { return 'drawer_support_feedback'; }
+    get casesTab() { return 'Cases'; }
+    get assetsTab() { return 'Assets'; }
+    get residentsTab() { return 'Residents'; }
+    get homeTab() { return 'Home'; }
+    get moreTab() { return 'More'; }
+    get menuIcon() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)'; }
+    get weatherBanner() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(1)'; }
+    get fabIcon() { return '-android uiautomator:new UiSelector().className("android.widget.Button").instance(0)'; }
+    get createCaseFabAction() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*Case.*")'; }
+    get bellIcon() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(2)'; }
+    get notificationsList() { return '-android uiautomator:new UiSelector().scrollable(true)'; }
+    get notificationItem() { return '-android uiautomator:new UiSelector().classNameMatches(".*(ViewGroup|View).*").clickable(true).instance(1)'; }
+    get markAllReadBtn() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*mark all as read.*")'; }
+    get supportMenuOption() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*(support|feedback).*")'; }
     get feedbackInput() { return 'support_feedback_input'; }
     get submitFeedbackBtn() { return 'support_feedback_submit'; }
     get successMessage() { return 'support_feedback_success'; }
@@ -97,6 +98,7 @@ export class DashboardPage extends BasePage {
         await this.tap(this.createCaseFabAction);
     }
 
+    // the locator is not accessible
     async openNotifications(): Promise<void> {
         await this.tap(this.bellIcon);
     }

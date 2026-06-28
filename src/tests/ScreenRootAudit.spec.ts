@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * ScreenRootAudit.spec.ts

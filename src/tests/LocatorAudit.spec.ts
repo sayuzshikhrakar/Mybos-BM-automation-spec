@@ -1,5 +1,5 @@
 import { expect } from '@wdio/globals';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * LocatorAudit.spec.ts
@@ -59,7 +59,7 @@ function assertValidIdentifierFormat(): void {
     for (const id of testIds) {
         const isValidPrefix = allowedPrefixes.some(prefix => id.startsWith(prefix));
         expect(isValidPrefix).toBe(true);
-        
+
         // Assert strict snake_case format compliance
         const isSnakeCase = /^[a-z0-9_]+$/.test(id);
         expect(isSnakeCase).toBe(true);

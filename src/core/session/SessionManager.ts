@@ -1,4 +1,4 @@
-import { LocatorRegistry } from '../LocatorRegistry';
+import { LocatorRegistry } from '../locator/LocatorRegistry';
 import { StateEngine } from '../StateEngine';
 
 /**
@@ -51,7 +51,7 @@ export class SessionManager {
         // Enforce socket connection constraint
         const socketLocator = LocatorRegistry.get('system_socket_connected');
         const socketConnected = await $(socketLocator);
-        
+
         try {
             await socketConnected.waitForExist({
                 timeout: StateEngine.TIMEOUT_NETWORK_SYNC,
@@ -76,7 +76,7 @@ export class SessionManager {
     static async resetSession(): Promise<void> {
         // Appium specific: Restarts the underlying application session entirely
         await driver.reloadSession();
-        
+
         // Re-validate everything from scratch after a hard reset
         await this.initialize();
     }

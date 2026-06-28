@@ -1,7 +1,7 @@
 import { expect } from '@wdio/globals';
 import { Bootstrap } from '../core/engine/Bootstrap';
 import { SessionManager } from '../core/engine/SessionManager';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import CasesPage from '../pages/CasesPage';
@@ -60,21 +60,21 @@ describe('Cases Module Automation Phase 3', () => {
             // validate first case exists
             await CasesPage.verifyListLoaded();
             await CasesAssertions.assertCasesListVisible();
-            
+
             // open first case
             await CasesPage.openFirstCase();
-            
+
             // validate case detail screen
             await CaseDetailPage.verifyCaseDetailLoaded();
             await CaseDetailAssertions.assertCaseDetailLoaded();
-            
+
             // validate case content
             await CaseDetailPage.verifyContentVisible();
             await CaseDetailAssertions.assertCaseContentVisible();
-            
+
             // return to cases list
             await CaseDetailPage.goBack();
-            
+
             await CasesPage.verifyCasesReady();
             await CasesAssertions.assertCasesReady();
         }

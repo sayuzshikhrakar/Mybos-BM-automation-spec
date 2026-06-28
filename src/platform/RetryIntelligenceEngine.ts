@@ -1,5 +1,5 @@
 import { StateEngine } from '../core/StateEngine';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 import { ExecutionContextManager, FailureClassification } from './ExecutionContextManager';
 
 const MAX_RETRIES = 3;

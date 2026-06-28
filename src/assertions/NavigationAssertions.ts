@@ -1,6 +1,6 @@
 import { expect } from '@wdio/globals';
 import { StateEngine } from '../core/StateEngine';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 export class NavigationAssertions {
     private static async enforceExecutionContract(): Promise<void> {
@@ -11,12 +11,12 @@ export class NavigationAssertions {
     private static async assertVisible(identifier: string): Promise<void> {
         const locator = LocatorRegistry.get(identifier);
         const element = await $(locator);
-        
+
         await element.waitForDisplayed({
             timeout: StateEngine.TIMEOUT_SCREEN_LOAD,
             timeoutMsg: `Assertion Failed: Element ${identifier} was not visibly mounted.`
         });
-        
+
         await expect(element).toBeDisplayed();
     }
 

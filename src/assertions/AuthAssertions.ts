@@ -1,6 +1,6 @@
 import { expect } from '@wdio/globals';
 import { StateEngine } from '../core/StateEngine';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * AuthAssertions.ts
@@ -26,13 +26,13 @@ export class AuthAssertions {
     private static async assertVisible(identifier: string): Promise<void> {
         const locator = LocatorRegistry.get(identifier);
         const element = await $(locator);
-        
+
         // Wait briefly for element to appear natively
         await element.waitForDisplayed({
             timeout: StateEngine.TIMEOUT_SCREEN_LOAD,
             timeoutMsg: `Assertion Failed: Element ${identifier} was not visible.`
         });
-        
+
         await expect(element).toBeDisplayed();
     }
 
@@ -50,14 +50,14 @@ export class AuthAssertions {
      */
     static async expectLoginFailed(): Promise<void> {
         await this.executePreAssertionHooks();
-        
+
         // Check for either the specific login error state or a global error banner
         const loginErrorLocator = LocatorRegistry.get('module_login_state_error');
         const globalErrorLocator = LocatorRegistry.get('global_error_banner');
-        
+
         const loginError = await $(loginErrorLocator);
         const globalError = await $(globalErrorLocator);
-        
+
         // Wait for either to exist
         await browser.waitUntil(async () => {
             return (await loginError.isDisplayed()) || (await globalError.isDisplayed());
@@ -110,16 +110,16 @@ export class AuthAssertions {
      */
     static async expectSessionPersisted(): Promise<void> {
         await this.executePreAssertionHooks();
-        
+
         // The app shell must exist natively
         await this.assertVisible('global_app_shell');
-        
+
         // Ensure the session successfully bypassed the login wall and restored the dashboard root
         await this.assertVisible('module_dashboard_screen_root');
-        
+
         const loginLocator = LocatorRegistry.get('module_login_screen_root');
         const loginRoot = await $(loginLocator);
-        
+
         // Double check login root is definitely NOT displayed
         await expect(loginRoot).not.toBeDisplayed();
     }

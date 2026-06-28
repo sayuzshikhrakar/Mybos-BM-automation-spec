@@ -3,10 +3,10 @@ import { SessionManager } from '../core/session/SessionManager';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
 import AssetsPage from '../pages/AssetsPage';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 describe('Assets Flow Module', () => {
-    
+
     before(async () => {
         await LoginPage.ensureAuthenticated('qa_user', 'password');
         await DashboardPage.waitForScreenReady();
@@ -24,7 +24,7 @@ describe('Assets Flow Module', () => {
         // Check for toast success (Contract Section 12)
         const toastLocator = LocatorRegistry.get(AssetsPage.successToast);
         const toastElement = await $(toastLocator);
-        
+
         await toastElement.waitForDisplayed({
             timeout: 10000,
             timeoutMsg: 'Assets creation toast did not appear'

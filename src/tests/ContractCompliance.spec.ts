@@ -1,7 +1,7 @@
 import { expect } from '@wdio/globals';
 import { ContractValidator } from '../core/engine/ContractValidator';
 import { StateEngine } from '../core/StateEngine';
-import { LocatorRegistry } from '../core/LocatorRegistry';
+import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 
 /**
  * ContractCompliance.spec.ts

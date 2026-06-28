@@ -1,4 +1,4 @@
-import { LocatorRegistry } from '../LocatorRegistry';
+import { LocatorRegistry } from '../locator/LocatorRegistry';
 import { StateEngine } from '../StateEngine';
 
 /**
@@ -33,7 +33,7 @@ export class ContractValidator {
         for (const identifier of hooks) {
             const locator = LocatorRegistry.get(identifier);
             const element = await $(locator);
-            
+
             if (!(await element.isExisting())) {
                 throw new Error(`HARD FAIL: Contract Violation. Mandatory system hook missing: ${identifier}`);
             }
@@ -46,7 +46,7 @@ export class ContractValidator {
      */
     static async validateReadyState(): Promise<void> {
         await StateEngine.waitForSystemStable();
-        
+
         const spinner = await $(LocatorRegistry.get('global_loading_spinner'));
         if (await spinner.isExisting()) {
             throw new Error('HARD FAIL: Contract Violation. global_loading_spinner is still active.');
@@ -59,7 +59,7 @@ export class ContractValidator {
     static async validateScreenRoot(screenRootId: string): Promise<void> {
         const locator = LocatorRegistry.get(screenRootId);
         const element = await $(locator);
-        
+
         await element.waitForDisplayed({
             timeout: StateEngine.TIMEOUT_SCREEN_LOAD,
             timeoutMsg: `HARD FAIL: Contract Violation. Screen root ${screenRootId} not visible.`
