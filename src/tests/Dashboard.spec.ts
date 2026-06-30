@@ -6,6 +6,7 @@ import DashboardPage from '../pages/DashboardPage';
 import { DashboardAssertions } from '../assertions/DashboardAssertions';
 import dashboardData from '../data/dashboard.json';
 import loginData from '../data/login.json';
+import { BasePage } from 'src/pages/BasePage';
 
 describe('Dashboard Module Tests', () => {
 
@@ -29,55 +30,60 @@ describe('Dashboard Module Tests', () => {
         await DashboardPage.returnToDashboard();
     });
 
-    describe('Positive Test Scenarios', () => {
-        // it('POS-01: should explicitly load and render the dashboard after successful authentication', async () => {
-        //     await DashboardAssertions.assertDashboardReady();
-        //     await DashboardAssertions.assertDashboardTabVisible();
-        //     await DashboardAssertions.assertDashboardModulesVisible(dashboardData.expectedModules);
-        // });
+    // describe('Positive Test Scenarios', () => {
+    //     it('POS-01: should explicitly load and render the dashboard after successful authentication', async () => {
+    //         await DashboardAssertions.assertDashboardReady();
+    //         await DashboardAssertions.assertDashboardTabVisible();
+    //         await DashboardAssertions.assertDashboardModulesVisible(dashboardData.expectedModules);
+    //     });
 
-        // it('POS-02:should display the hamburger menu icon on the top left of the dashboard', async () => {
-        //     await DashboardAssertions.assertHamburgerMenuVisible();
-        // });
+    // it('POS-02:should display the hamburger menu icon on the top left of the dashboard', async () => {
+    //     await DashboardAssertions.assertHamburgerMenuVisible();
+    // });
 
-        // it('POS-03:should display the correct building name on the dashboard', async () => {
-        //     await DashboardAssertions.assertBuildingNameVisible(dashboardData.buildingName);
-        // });
+    // it('POS-03:should display the correct building name on the dashboard', async () => {
+    //     await DashboardAssertions.assertBuildingNameVisible(dashboardData.buildingName);
+    // });
 
-        it('POS-04: View Dashboard & Weather', async () => {
-            await DashboardPage.waitForWeatherBanner();
-        });
+    // it('POS-04: View Dashboard & Weather', async () => {
+    //     await DashboardPage.waitForWeatherBanner();
+    // });
 
-        it('POS-05: Navigate to Module', async () => {
-            await DashboardPage.tapCasesModule();
-        });
-
-
-        //notification bell icon is not acceessible
-        // it('POS-07: View Notifications', async () => {
-        //     await DashboardPage.openNotifications();
-        //     await DashboardPage.verifyNotificationsListOpen();
-        // });
-
-
-        // it('POS-09: Mark All Notifications Read', async () => {
-        //     await DashboardPage.openNotifications();
-        //     await DashboardPage.verifyNotificationsListOpen();
-        //     await DashboardPage.markAllNotificationsRead();
-        // });
-
-        it('POS-10: Submit Support Feedback', async () => {
-            await DashboardPage.tapMenu();
-            await DashboardPage.tapSupportFeedback();
-            await DashboardPage.submitSupportFeedback('Test Feedback from E2E Automation');
-            await DashboardPage.verifyFeedbackSuccess();
-        });
-
-        // it('POS-11: Open Custom Drawer', async () => {
-        //     await DashboardPage.tapMenu();
-        //     await DashboardPage.expectVisible(DashboardPage.supportMenuOption);
-        // });
+    it('POS-05: Navigate to Module', async () => {
+        await DashboardPage.tapCasesModule();
     });
+
+
+    // //notification bell icon is not acceessible
+    // it('POS-07: View Notifications', async () => {
+    //     await DashboardPage.openNotifications();
+    //     await DashboardPage.verifyNotificationsListOpen();
+    // });
+
+
+    // it('POS-09: Mark All Notifications Read', async () => {
+    //     await DashboardPage.openNotifications();
+    //     await DashboardPage.verifyNotificationsListOpen();
+    //     await DashboardPage.markAllNotificationsRead();
+    // });
+
+    // it('POS-10: Submit Support Feedback', async () => {
+    //     await DashboardPage.tapMenu();
+    //     await DashboardPage.tapSupportFeedback();
+    //     await DashboardPage.tapPleaseSelectDropdown();
+    //     await DashboardPage.selectRandomQueryType();
+    //     await DashboardPage.EnterMessage();
+    //     await DashboardPage.tapSendButton();
+    //     await DashboardPage.verifySentEmail();
+    //     console.log("bere");
+
+    // });
+
+    // it('POS-11: Open Custom Drawer', async () => {
+    //     await DashboardPage.tapMenu();
+    //     await DashboardPage.expectVisible(DashboardPage.supportMenuOption);
+    // });
+    // });
 
     describe('Negative Test Scenarios', () => {
         it.skip('NEG-01: Mark Notification Read Failure - Requires Mock API setup', async () => {

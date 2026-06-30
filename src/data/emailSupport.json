@@ -1,0 +1,10 @@
+{
+    "QueryType": [
+        "Report Bug",
+        "send feedback"
+    ],
+    "Messages": [
+        "This is a bug description",
+        "This is a feedback description"
+    ]
+}

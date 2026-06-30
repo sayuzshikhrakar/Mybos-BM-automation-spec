@@ -1,6 +1,10 @@
 // src/core/LocatorRegistry.ts
 
 export const LocatorRegistry = {
+    General: {
+        sendButton: '-android uiautomator:new UiSelector().description("Send")',
+        successMessage: '-android uiautomator:new UiSelector().description("Successfully sent email")',
+    },
     CasesPage: {
         casesHeader: '~cases',
         allTab: '~all',
@@ -178,7 +182,30 @@ export const LocatorRegistry = {
         addDescriptionButton: '~addDescription'
     },
     DashboardPage: {
-        moreTab: '~more'
+        casesMenu: '-android uiautomator:new UiSelector().description("Cases")',
+        maintenanceRequestMenu: '-android uiautomator:new UiSelector().description("Maintenance Request")',
+        inspectionsMenu: '-android uiautomator:new UiSelector().description("Inspections")',
+        residentsMenu: '-android uiautomator:new UiSelector().description("Residents")',
+        contractorsMenu: '-android uiautomator:new UiSelector().description("Contractors")',
+        libraryMenu: '-android uiautomator:new UiSelector().description("Library")',
+        calendarMenu: '-android uiautomator:new UiSelector().description("Calendar")',
+        broadcastMenu: '-android uiautomator:new UiSelector().description("Broadcast")',
+        keysMenu: '-android uiautomator:new UiSelector().description("Keys")',
+        homeTab: '-android uiautomator:new UiSelector().description("Home")',
+        casesTab: '-android uiautomator:new UiSelector().description("Cases").instance(0)',
+        inspectionsTab: '-android uiautomator:new UiSelector().description("Inspections")',
+        moreTab: '-android uiautomator:new UiSelector().description("More")',
+        assetsTab: '-android uiautomator:new UiSelector().description("Assets")',
+        residentsTab: '-android uiautomator:new UiSelector().description("Residents")',
+        menuIcon: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)',
+        weatherBanner: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(1)',
+        fabIcon: '-android uiautomator:new UiSelector().className("android.widget.Button").instance(0)',
+        createCaseFabAction: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*Case.*")',
+        bellIcon: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(2)',
+        notificationsList: '-android uiautomator:new UiSelector().scrollable(true)',
+        notificationItem: '-android uiautomator:new UiSelector().classNameMatches(".*(ViewGroup|View).*").clickable(true).instance(1)',
+        markAllReadBtn: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*mark all as read.*")',
+        supportMenuOption: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*(support|feedback).*")'
     },
     EditProfilePage: {
         editProfileHeader: '~editProfile',

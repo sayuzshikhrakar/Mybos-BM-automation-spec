@@ -1,6 +1,7 @@
 import { expect } from '@wdio/globals';
 import { LocatorRegistry } from '../core/locator/LocatorRegistry';
 import { StateEngine } from '../core/StateEngine';
+import emailSupportData from '../data/emailSupport.json';
 
 /**
  * BasePage.ts
@@ -17,7 +18,7 @@ export class BasePage {
     protected get modulePrefix(): string {
         return this.screenRootId.replace('_screen_root', '');
     }
-
+    get pleaseSelectDropdown() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*Please Select.*")' }
     /**
      * Validates that the current screen is ready for interaction.
      */
@@ -160,32 +161,84 @@ export class BasePage {
     async returnToDashboard(): Promise<void> {
         const backButtonLocator = LocatorRegistry.get(LocatorRegistry.NavigationPage.backButton);
         const moreTabLocator = LocatorRegistry.get(LocatorRegistry.DashboardPage.moreTab);
-        const homeTabLocator = LocatorRegistry.get('Home');
+        const homeTabLocator = LocatorRegistry.get(LocatorRegistry.DashboardPage.homeTab);
 
         let isMoreTabVisible = await $(moreTabLocator).isDisplayed();
 
-        // If we are already on the dashboard, exit early
-        if (isMoreTabVisible) {
-            return;
-        }
-
         let attempts = 0;
 
+        // Keep pressing back until the bottom navigation bar (moreTab) becomes visible
         while (!isMoreTabVisible && attempts < 5) {
             const backBtn = await $(backButtonLocator);
-            const homeBtn = await $(homeTabLocator);
 
             if (await backBtn.isDisplayed()) {
                 await backBtn.click();
-            } else if (await homeBtn.isDisplayed()) {
-                await homeBtn.click();
             } else {
-                break; // If there is no back button or home tab, break to avoid infinite loop
+                break; // If there is no back button, break to avoid infinite loop
             }
 
             await driver.pause(1000); // Wait for screen transition
             isMoreTabVisible = await $(moreTabLocator).isDisplayed();
             attempts++;
         }
+
+        // Once we are at the root level (bottom navigation is visible), ensure we tap Home to return to the Dashboard
+        if (isMoreTabVisible) {
+            const homeBtn = await $(homeTabLocator);
+            if (await homeBtn.isDisplayed()) {
+                await homeBtn.click();
+                await driver.pause(1000); // Give the dashboard a moment to render
+            }
+        }
+    }
+
+    /**
+     * Taps the 'Please Select' dropdown.
+     */
+    async tapPleaseSelectDropdown(): Promise<void> {
+        await this.expectVisible(this.pleaseSelectDropdown);
+        await this.tap(this.pleaseSelectDropdown);
+    }
+
+    /**
+     * Selects a random query type option from a dropdown
+     * The option is randomly selected from emailSupport.json's QueryType
+     * @returns The randomly selected query type option
+     */
+    async selectRandomQueryType(): Promise<string> {
+        const queryTypes = emailSupportData.QueryType;
+        const randomOption = queryTypes[Math.floor(Math.random() * queryTypes.length)];
+
+        const optionLocator = `-android uiautomator:new UiSelector().descriptionMatches("(?i).*${randomOption}.*")`;
+
+        await this.expectVisible(optionLocator);
+        await this.tap(optionLocator);
+
+        return randomOption;
+    }
+
+    async EnterMessage(): Promise<string> {
+        const messages = emailSupportData.Messages;
+        const randomOption = messages[Math.floor(Math.random() * messages.length)];
+
+        const messageInputLocator = `-android uiautomator:new UiSelector().className("android.widget.EditText")`;
+
+        await this.expectVisible(messageInputLocator);
+        await this.tap(messageInputLocator); // Focus the field
+        await driver.pause(1000); // Wait for Flutter to bring up the keyboard
+
+        const element = await this.getElement(messageInputLocator);
+        await element.addValue(randomOption); // Type the message directly
+
+        return randomOption;
+    }
+
+    async tapSendButton(): Promise<void> {
+        await this.expectVisible(LocatorRegistry.General.sendButton);
+        await this.tap(LocatorRegistry.General.sendButton);
+    }
+
+    async verifySentEmail(): Promise<void> {
+        await this.expectNotVisible(LocatorRegistry.General.successMessage);
     }
 }

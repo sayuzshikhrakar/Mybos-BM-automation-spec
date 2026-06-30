@@ -13,24 +13,7 @@ export class DashboardPage extends BasePage {
         super('dashboard_screen_root');
     }
 
-    // Natively structured semantic identifiers
-    get casesTab() { return 'Cases'; }
-    get assetsTab() { return 'Assets'; }
-    get residentsTab() { return 'Residents'; }
-    get homeTab() { return 'Home'; }
-    get moreTab() { return 'More'; }
-    get menuIcon() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(0)'; }
-    get weatherBanner() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(1)'; }
-    get fabIcon() { return '-android uiautomator:new UiSelector().className("android.widget.Button").instance(0)'; }
-    get createCaseFabAction() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*Case.*")'; }
-    get bellIcon() { return '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(2)'; }
-    get notificationsList() { return '-android uiautomator:new UiSelector().scrollable(true)'; }
-    get notificationItem() { return '-android uiautomator:new UiSelector().classNameMatches(".*(ViewGroup|View).*").clickable(true).instance(1)'; }
-    get markAllReadBtn() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*mark all as read.*")'; }
-    get supportMenuOption() { return '-android uiautomator:new UiSelector().descriptionMatches("(?i).*(support|feedback).*")'; }
-    get feedbackInput() { return 'support_feedback_input'; }
-    get submitFeedbackBtn() { return 'support_feedback_submit'; }
-    get successMessage() { return 'support_feedback_success'; }
+    // All locators are now centralized in LocatorRegistry.ts
 
     /**
      * Overridden hook to natively validate specific dashboard components 
@@ -55,77 +38,68 @@ export class DashboardPage extends BasePage {
      * using fallback selectors or XPath.
      */
     async verifyBottomNavigation(): Promise<void> {
-        await this.expectVisible(this.homeTab);
+        await this.expectVisible(LocatorRegistry.DashboardPage.homeTab);
     }
 
     /**
      * Navigates to the Cases module utilizing the StateEngine execution wrapper.
      */
     async tapCasesModule(): Promise<void> {
-        await this.tap(this.casesTab);
+        await this.tap(LocatorRegistry.DashboardPage.casesTab);
     }
 
     /**
      * Navigates to the Assets module utilizing the StateEngine execution wrapper.
      */
     async tapAssetsModule(): Promise<void> {
-        await this.tap(this.assetsTab);
+        await this.tap(LocatorRegistry.DashboardPage.assetsTab);
     }
 
     /**
      * Navigates to the Residents module utilizing the StateEngine execution wrapper.
      */
     async tapResidentsModule(): Promise<void> {
-        await this.tap(this.residentsTab);
+        await this.tap(LocatorRegistry.DashboardPage.residentsTab);
     }
 
     /**
      * Navigates to or opens the global Menu utilizing the StateEngine execution wrapper.
      */
     async tapMenu(): Promise<void> {
-        await this.tap(this.menuIcon);
+        await this.tap(LocatorRegistry.DashboardPage.menuIcon);
     }
 
     async waitForWeatherBanner(): Promise<void> {
-        await this.expectVisible(this.weatherBanner);
+        await this.expectVisible(LocatorRegistry.DashboardPage.weatherBanner);
     }
 
     async tapFab(): Promise<void> {
-        await this.tap(this.fabIcon);
+        await this.tap(LocatorRegistry.DashboardPage.fabIcon);
     }
 
     async tapCreateCaseFromFab(): Promise<void> {
-        await this.tap(this.createCaseFabAction);
+        await this.tap(LocatorRegistry.DashboardPage.createCaseFabAction);
     }
 
     // the locator is not accessible
     async openNotifications(): Promise<void> {
-        await this.tap(this.bellIcon);
+        await this.tap(LocatorRegistry.DashboardPage.bellIcon);
     }
 
     async verifyNotificationsListOpen(): Promise<void> {
-        await this.expectVisible(this.notificationsList);
+        await this.expectVisible(LocatorRegistry.DashboardPage.notificationsList);
     }
 
     async markSingleNotificationRead(): Promise<void> {
-        await this.tap(this.notificationItem);
+        await this.tap(LocatorRegistry.DashboardPage.notificationItem);
     }
 
     async markAllNotificationsRead(): Promise<void> {
-        await this.tap(this.markAllReadBtn);
+        await this.tap(LocatorRegistry.DashboardPage.markAllReadBtn);
     }
 
     async tapSupportFeedback(): Promise<void> {
-        await this.tap(this.supportMenuOption);
-    }
-
-    async submitSupportFeedback(feedbackText: string): Promise<void> {
-        await this.input(this.feedbackInput, feedbackText);
-        await this.tap(this.submitFeedbackBtn);
-    }
-
-    async verifyFeedbackSuccess(): Promise<void> {
-        await this.expectVisible(this.successMessage);
+        await this.tap(LocatorRegistry.DashboardPage.supportMenuOption);
     }
 
     /**
