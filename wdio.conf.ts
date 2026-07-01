@@ -152,7 +152,7 @@ export const config: Options.Testrunner = {
     /**
      * Gets executed after all workers got shut down and the process is about to exit.
      */
-    onComplete: function(exitCode, config, capabilities, results) {
+    onComplete: function (exitCode, config, capabilities, results) {
         const { execSync } = require('child_process');
         try {
             console.info('\n================================================================');

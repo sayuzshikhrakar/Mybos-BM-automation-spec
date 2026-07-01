@@ -6,6 +6,8 @@ export const LocatorRegistry = {
         successMessage: '-android uiautomator:new UiSelector().description("Successfully sent email")',
     },
     CasesPage: {
+        showMenu: '-android uiautomator:new UiSelector().description("Show menu")',
+        caseListLoadIdentifier: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*\\\\d+ cases.*")',
         casesHeader: '~cases',
         allTab: '~all',
         myCasesTab: '~myCases',
@@ -201,7 +203,7 @@ export const LocatorRegistry = {
         weatherBanner: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(1)',
         fabIcon: '-android uiautomator:new UiSelector().className("android.widget.Button").instance(0)',
         createCaseFabAction: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*Case.*")',
-        bellIcon: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(2)',
+        bellIcon: '-android uiautomator:new UiSelector().className("android.widget.ImageView").instance(1)',
         notificationsList: '-android uiautomator:new UiSelector().scrollable(true)',
         notificationItem: '-android uiautomator:new UiSelector().classNameMatches(".*(ViewGroup|View).*").clickable(true).instance(1)',
         markAllReadBtn: '-android uiautomator:new UiSelector().descriptionMatches("(?i).*mark all as read.*")',

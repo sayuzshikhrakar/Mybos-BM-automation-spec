@@ -54,11 +54,11 @@ describe('Dashboard Module Tests', () => {
     });
 
 
-    // //notification bell icon is not acceessible
-    // it('POS-07: View Notifications', async () => {
-    //     await DashboardPage.openNotifications();
-    //     await DashboardPage.verifyNotificationsListOpen();
-    // });
+    //notification bell icon is not acceessible
+    it('POS-07: View Notifications', async () => {
+        await DashboardPage.openNotifications();
+        await DashboardPage.verifyNotificationsListOpen();
+    });
 
 
     // it('POS-09: Mark All Notifications Read', async () => {

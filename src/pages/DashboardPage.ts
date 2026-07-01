@@ -46,8 +46,13 @@ export class DashboardPage extends BasePage {
      */
     async tapCasesModule(): Promise<void> {
         await this.tap(LocatorRegistry.DashboardPage.casesTab);
+        await this.verifyCasesListLoaded();
     }
 
+    //Verify case list is loaded in the case screen
+    async verifyCasesListLoaded(): Promise<void> {
+        await this.expectVisible(LocatorRegistry.CasesPage.caseListLoadIdentifier);
+    }
     /**
      * Navigates to the Assets module utilizing the StateEngine execution wrapper.
      */
